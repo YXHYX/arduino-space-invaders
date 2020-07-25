@@ -1,0 +1,8 @@
+game		KEYWORD1
+run		KEYWORD2
+init		KEYWORD2
+update		KEYWORD2
+render		KEYWORD2
+
+Player      	KEYWORD1
+Enemy		KEYWORD1

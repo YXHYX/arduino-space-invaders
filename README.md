@@ -10,7 +10,6 @@ You will need some libraries
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <TFT_ILI9163C.h>
-
 ```
 
 ## Usage
@@ -36,14 +35,17 @@ void setup()
 {
      //for random
      randomSeed(analogRead(0));
+     
      //intialize the game
      game.init();
+
      //before running the game, we've go to set up the some pins to inputs and outputs
      pinMode(A1, INPUT); //joystick X axis pin
      pinMode(A2, INPUT); //joystick Y axis pin
      pinMode(7, INPUT_PULLUP); //joystick Button pin
      pinMode(6, OUTPUT); //buzzer pin
 }
+
 void loop()
 {
      game.run(100); //run the game on an interval of 100ms without using delay;

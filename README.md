@@ -1,5 +1,5 @@
-# arduino-space-invaders
-Space invaders game using an Arduino Uno and a TFT display 
+# Arduino Space Invaders
+Space Invaders game using an Arduino Uno, a TFT display, a joystick and a buzzer.
 
 ## Installation
 Download the code, extract the library and install it on Arduino IDE by copying it to the libraries folder in the Arduino folder.

@@ -14,7 +14,6 @@ Enemy::~Enemy(){
 void Enemy::end(){
 	tone(buzzer, 300, 130);
 	this->m_tft->fillRect(m_x, m_y, 12, 10, BLACK);		
-	return;
 }
 //check collisions idk
 bool Enemy::collide(int x1, int y1){
@@ -23,6 +22,7 @@ bool Enemy::collide(int x1, int y1){
 		y1 < m_y + 8 &&
 		y1 + 8 > m_y){
 		//collision detected
+		this->m_tft->fillRect(m_x, m_y, 11, 8, BLACK);
 		alive = false; //dead
 		return true;
 	}
@@ -30,31 +30,23 @@ bool Enemy::collide(int x1, int y1){
 }
 void Enemy::update(){
 	
-	if(alive == false)
-		return;
 	if(animationFrame == 5)
 		animationFrame = -1;
 	else
 		animationFrame++;
 }
 void Enemy::render(){
-	
-	if(alive == false)
-	{
-		this->m_tft->fillRect(m_x, m_y, 11, 8, BLACK);		
-		return;
-	}
 	for(int i = 0; i < 8; i++){
 		for(int j = 0; j < 11; j++){
 			if(animationFrame < 3 && animationFrame >= 0){
-				if(this->invader1[i][j] == 0)
+				if(invader1[i][j] == 0)
 					m_tft->drawPixel(m_x+j, m_y+i, BLACK);
 				else
 					m_tft->drawPixel(m_x+j, m_y+i, WHITE);
 			}
 				
 			if(animationFrame < 6 && animationFrame >= 3){
-				if(this->invader2[i][j] == 0)
+				if(invader2[i][j] == 0)
 					m_tft->drawPixel(m_x+j, m_y+i, BLACK);
 				else
 					m_tft->drawPixel(m_x+j, m_y+i, WHITE);

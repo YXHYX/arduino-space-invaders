@@ -1,21 +1,20 @@
 #include "Game.h"
 
-Game::Game(TFT_ILI9163C *tft, int VRx, int VRy, int SW, int B) : m_tft(tft){
-	m_player         = new Player(tft, VRx, VRy, SW, B);
-	//m_enemy			 = new Enemy(tft, random(2,7)*16, random(2,7)*16, B);
-	for(int i = 0; i < 3; i++)
-		this->m_enemyArray[i] = new Enemy(tft, random(2,7)*16, random(2,7)*16, B); 
+Game::Game(TFT_ILI9163C *tft, int VRx, int VRy, int SW, int B) 
+	: m_tft(tft), VRx(VRx), VRy(VRy), SW(SW), B(B)
+{
+	
 	m_gameOver 		 = false;
 	m_score 		 = 0;
 	m_currentMillis  = 0;
 	m_previousMillis = 0;
+	
+	m_difficulty = 1;
+	this->m_level = new Level(m_difficulty, m_tft, VRx, VRy, SW, B);
 }
 Game::~Game(){
 	delete m_tft;
-	delete m_player;
-	for(int i = 0; i < 3; i++)
-		delete m_enemyArray[i];
-	//delete m_enemy;
+	delete m_level;
 }
 
 void Game::showScore(bool on){
@@ -24,12 +23,15 @@ void Game::showScore(bool on){
 		m_tft->fillRect(0, 0, 127, 16, BLACK);
 		return;
 	}
+	
+	this->m_score = this->m_level->getScore();
+	
 	m_tft->fillRect(0, 0, 127, 16, BLACK);
 	m_tft->setCursor(8, 2);
 	m_tft->setTextColor(WHITE);  
 	m_tft->setTextSize(2);
 	m_tft->print("Score:");
-	m_tft->print(this->m_player->getScore());
+	m_tft->print(this->m_level->getScore());
 }
 
 void Game::run(int interval){
@@ -44,47 +46,49 @@ void Game::run(int interval){
         }
 	}
 }
-void Game::update(){
-	
-	
-	
-	//update player
-	this->m_player->update();
-	
-	
-	for(int i = 0; i < 3; i++){
 
-		this->m_player->shoot(this->m_enemyArray[i]->collide(this->m_player->getBX(), this->m_player->getBY()));
-		
-		if(!(this->m_enemyArray[i] == null)){
-			if(this->m_enemyArray[i]->collide(this->m_player->getBX(), this->m_player->getBY()))
-				this->m_player->addPoints();
-
-			//check if enemy is alive
-			if(this->m_enemyArray[i]->getAlive() || !(this->m_enemyArray[i] == null)){
-				this->m_enemyArray[i]->update();
-			}
-			//if enemy isnt alive assign it to null
-			if(!this->m_enemyArray[i]->getAlive() || this->m_enemyArray[i] == null){
-				if(this->m_enemyArray[i] == null)
-					return;
-				this->m_enemyArray[i]->end();
-				this->m_enemyArray[i] = null;
-			}
-		}
+void Game::levelComplete()
+{
+	if(m_difficulty > 3)
+		m_difficulty = 0;
+	
+	this->m_tft->setCursor(16, 32);
+	this->m_tft->setTextColor(GREEN);  
+	this->m_tft->setTextSize(1);
+	this->m_tft->println("Level Complete!"); 
+	this->m_tft->setCursor(16, 48);
+	this->m_tft->println("Press joystick's");
+	this->m_tft->setCursor(16, 56);
+	this->m_tft->println("button to continue.");
+	
+	
+	if(digitalRead(this->SW) == false)
+	{
+		Serial.println(m_difficulty);
+		m_difficulty++;
+		Serial.println(m_difficulty);
+		m_level = null;
+		this->m_tft->fillScreen();
+		this->m_level = new Level(m_difficulty, m_tft, VRx, VRy, SW, B);
 	}
 }
 
+void Game::update(){
+	this->m_level->update();
+	
+	if(this->m_score != this->m_level->getScore())
+		this->showScore(true);
+}
+
 void Game::render(){
-	if(this->m_player->getScore() != this->m_score){
-		showScore(true);
-		this->m_score = this->m_player->getScore();
-	}
-	this->m_player->render();
-	for(int i = 0; i < 3; i++){
-	if(this->m_enemyArray[i] == null)
-			return;
-	this->m_enemyArray[i]->render();
+	this->m_level->render();
+	
+	if(this->m_level->getLevelCompleted())
+		this->m_tft->fillScreen();
+	
+	while(this->m_level->getLevelCompleted() || this->m_level == null)
+	{
+		this->levelComplete();
 	}
 }
 

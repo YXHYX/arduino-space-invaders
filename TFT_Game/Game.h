@@ -2,8 +2,7 @@
 #define GAME_H
 
 // Includes
-#include "Player.h"
-#include "Enemy.h"
+#include "Level.h"
 
 // Defines
 #define null 0
@@ -23,11 +22,13 @@ private:
 	//Game variables
 	int m_score;
 	bool m_gameOver;
-    Player* m_player;
-	Enemy* m_enemyArray[3];
-	
-	
+	int m_difficulty;
+	Level* m_level;
 
+	int VRx;
+	int VRy;
+	int SW;
+	int B;
 	//time variables
 	long m_currentMillis;
 	long m_previousMillis;
@@ -39,6 +40,7 @@ public:
 	
 	
 	void showScore(bool on);
+	void levelComplete();
 	
 	void run(int interval);
     void render();

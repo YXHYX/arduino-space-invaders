@@ -40,12 +40,13 @@ public:
 	Player(TFT_ILI9163C *tft, int VRx, int VRy, int SW, int B);
 	virtual ~Player();
 
-	void shoot(bool stop);
 	int getScore();
 	
 	int getBX();
 	int getBY();
 	
+	void shoot();
+	void stopShoot();
 	void addPoints(int points = 10);
 	
 	void collide();

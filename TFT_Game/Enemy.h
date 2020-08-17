@@ -20,19 +20,7 @@
 #define WHITE     0xFFFF
 
 
-// Enemy class
-class Enemy
-{
-private:
-	int m_x, m_y; //position of enemy
-	int m_prevx, m_prevy; //previous posiotion of enemy
-	
-	int buzzer; // for buzzer
-	
-	bool alive; //life state of enemy
-	
-	int animationFrame; //animation frame of enemy
-	
+namespace{
 	bool invader1[8][11] = // frame animation 1
 	{
 		{0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0},
@@ -55,6 +43,22 @@ private:
 		{0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
 		{0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0}
 	};
+}
+
+// Enemy class
+class Enemy
+{
+private:
+	int m_x, m_y; //position of enemy
+	int m_prevx, m_prevy; //previous posiotion of enemy
+	
+	int buzzer; // for buzzer
+	
+	bool alive; //life state of enemy
+	
+	int animationFrame; //animation frame of enemy
+	
+	
 	
 	TFT_ILI9163C *m_tft; // a pointer to the display
 

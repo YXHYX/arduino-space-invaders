@@ -18,11 +18,8 @@ Player::~Player(){
     delete tft;
 }
 
-void Player::shoot(bool stop){
-	if(stop == true)
-	{
-		bullety = 140;
-	}
+void Player::shoot(){
+	
 	if(digitalRead(SW) == false){
 		if(bulletShoot == false){
 			this->bulletx = this->x+4;
@@ -39,11 +36,16 @@ void Player::shoot(bool stop){
 		this->tft->drawLine(this->bulletx, this->bullety-8, this->bulletx, this->bullety, BLACK);
 		if(bullety > 128)
 		{
-			bulletShoot = false;
 			this->tft->drawLine(this->bulletx, this->bullety, this->bulletx, this->bullety+8, BLACK);
+			bulletShoot = false;
 		}
 	}
-	
+}
+
+void Player::stopShoot()
+{
+	this->tft->drawLine(this->bulletx, this->bullety, this->bulletx, this->bullety+8, BLACK);
+	bulletShoot = false;
 }
 
 int Player::getScore(){
@@ -51,7 +53,7 @@ int Player::getScore(){
 }
 
 void Player::addPoints(int points){
-	this->score =+ points;
+	this->score = this->score + points;
 }	
 
 void Player::update(){
@@ -70,6 +72,7 @@ void Player::update(){
 		y = 120;
 	else if (y < 16)
 		y = 16;
+	this->shoot();
 }
 
 void Player::render(){

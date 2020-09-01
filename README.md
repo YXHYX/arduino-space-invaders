@@ -1,11 +1,11 @@
 # Arduino Space Invaders
-Space Invaders game using an Arduino Uno, a TFT display, a joystick and a buzzer.
+Space Invaders game using an Arduino Mega, a TFT display, a joystick and a buzzer.
 
 ## Installation
 Download the code, extract the library and install it on Arduino IDE by copying it to the libraries folder in the Arduino folder.
 
 ## Requirements
-You will need [sumotoy's TFT_ILI9163C](https://github.com/sumotoy/TFT_ILI9163C) and [sumotoy's Adafruit_GFX](https://github.com/sumotoy/Adafruit_GFX)
+You will need an Arduino Mega or better + a joystick + a TFT-ILI9163C and a buzzer, libraries [sumotoy's TFT_ILI9163C](https://github.com/sumotoy/TFT_ILI9163C) and [sumotoy's Adafruit_GFX](https://github.com/sumotoy/Adafruit_GFX)
 ```
 #include <SPI.h>
 #include <Adafruit_GFX.h>
